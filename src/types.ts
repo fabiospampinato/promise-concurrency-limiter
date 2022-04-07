@@ -1,5 +1,5 @@
 
-/* TYPES */
+/* MAIN */
 
 type Callback = () => void;
 
@@ -11,4 +11,4 @@ type Options = {
 
 /* EXPORT */
 
-export {Callback, Task, Options};
+export type {Callback, Task, Options};

@@ -1,10 +1,10 @@
 
 /* IMPORT */
 
-import {describe} from 'ava-spec';
-import {default as Limiter} from '../dist';
+import {describe} from 'fava';
+import Limiter from '../dist/index.js';
 
-/* PROMISE CONCURRENCY LIMITER */
+/* MAIN */
 
 describe ( 'Limiter', it => {
 

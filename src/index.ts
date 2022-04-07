@@ -1,17 +1,17 @@
 
 /* IMPORT */
 
-import {Callback, Options, Task} from './types';
+import type {Callback, Options, Task} from './types';
 
-/* PROMISE CONCURRENCY LIMITER */
+/* MAIN */
 
 class Limiter {
 
   /* VARIABLES */
 
-  concurrency: number;
-  count: number;
-  queue: Set<Callback>;
+  private concurrency: number;
+  private count: number;
+  private queue: Set<Callback>;
 
   /* CONSTRUCTOR */
 
@@ -25,7 +25,7 @@ class Limiter {
 
   /* API */
 
-  add <T> ( fn: Task<T> ): Promise<T> {
+  add = <T> ( fn: Task<T> ): Promise<T> => {
 
     if ( this.count < this.concurrency ) return this.run ( fn );
 
@@ -37,9 +37,9 @@ class Limiter {
 
     });
 
-  }
+  };
 
-  flush (): void {
+  flush = (): void => {
 
     for ( const callback of this.queue ) {
 
@@ -51,9 +51,9 @@ class Limiter {
 
     }
 
-  }
+  };
 
-  run <T> ( fn: Task<T> ): Promise<T> {
+  run = <T> ( fn: Task<T> ): Promise<T> => {
 
     this.count += 1;
 
@@ -71,8 +71,10 @@ class Limiter {
 
     return promise;
 
-  }
+  };
 
 }
+
+/* EXPORT */
 
 export default Limiter;
