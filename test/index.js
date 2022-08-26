@@ -53,4 +53,31 @@ describe ( 'Limiter', it => {
 
   });
 
+  it ( 'no deadlock', async t => {
+
+    const limiter = new Limiter ({
+      concurrency: 1
+    });
+
+    const maxDepth = 2;
+
+    const handleDirectory = ( rootPath, path, depth ) => {
+      const subPath = `${rootPath}/${path}`;
+      if ( depth >= maxDepth ) return Promise.resolve ( subPath );
+      return limiter.add ( () => populateResultFromPath ( subPath, depth + 1 ) );
+    };
+
+    const handleDirents = ( rootPath, dirents, depth ) => {
+      return Promise.all ( dirents.map ( dirent => handleDirectory ( rootPath, dirent, depth ) ) );
+    };
+
+    const populateResultFromPath = ( rootPath, depth ) => handleDirents ( rootPath, ['a', 'b'], depth );
+
+    t.deepEqual ( await populateResultFromPath ( '', 0 ), [
+      [ [ '/a/a/a', '/a/a/b' ], [ '/a/b/a', '/a/b/b' ] ],
+      [ [ '/b/a/a', '/b/a/b' ], [ '/b/b/a', '/b/b/b' ] ]
+    ]);
+
+  });
+
 });
