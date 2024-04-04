@@ -78,3 +78,4 @@ class Limiter {
 /* EXPORT */
 
 export default Limiter;
+export type {Options};
